@@ -52,6 +52,30 @@ server.get('/users/:id', (req, res) => {
         });
 })
 
+server.get('/users/:id/posts/', (req, res) => {
+    const id = req.params.id;
+
+    userDb
+        .get(id)
+        .then(user => {
+            if (user) {
+                userDb
+                    .getUserPosts(id)
+                    .then(posts => {
+                        res.status(200).json(posts);
+                    })
+                    .catch(() => {
+                        res.status(500).json({ "error": 'Could not get post information. Please try again.' })
+                    });
+            } else {
+                res.status(404).json({"error": 'No user with the specified ID could be found.'})
+            }
+        })
+        .catch(() => {
+            res.status(500).json({"error": 'No information could not be retrieved.'});
+        });
+})
+
 server.post('/users/', (req, res) => {
     const newUserData = req.body;
 
