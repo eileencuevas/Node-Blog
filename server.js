@@ -94,6 +94,30 @@ server.put('/users/:id', (req, res) => {
         });
 })
 
+server.delete('/users/:id', (req, res) => {
+    const id = req.params.id;
+
+    userDb
+        .get(id)
+        .then(user => {
+            if (user) {
+                userDb
+                    .remove(id)
+                    .then(() => {
+                        res.status(200).json(user);
+                    })
+                    .catch(() => {
+                        res.status(500).json({ "error": "There was an error with deleting this user. Please try again." })
+                    });
+            } else {
+                res.status(404).json({"error": 'No user with the specified ID could be found.'})
+            }
+        })
+        .catch(() => {
+            res.status(500).json({"error": 'No information could not be retrieved.'});
+        });
+})
+
 // exports
 
 module.exports = server;
