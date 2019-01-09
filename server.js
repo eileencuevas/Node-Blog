@@ -11,6 +11,16 @@ const server = express();
 server.use(helmet());
 server.use(express.json());
 
+const uppercaser = (req, res, next) => {
+    let name = req.body.name || '';
+    
+    if (name.length > 0) {
+        req.uppercased = { name: name.toUpperCase() };
+    }
+    
+    next();
+}
+
 // const uppercaser = (req, res, next) => {
 //     const name = req.body.name;
 //     if (name) {
@@ -19,7 +29,7 @@ server.use(express.json());
 //     }
 // }
 
-// server.use(uppercaser);
+server.use(uppercaser);
 
 
 // routes
@@ -76,8 +86,8 @@ server.get('/users/:id/posts/', (req, res) => {
         });
 })
 
-server.post('/users/', (req, res) => {
-    const newUserData = req.body;
+server.post('/users/', uppercaser, (req, res) => {
+    const newUserData = req.uppercased;
 
     if (newUserData) {
         userDb
@@ -93,9 +103,9 @@ server.post('/users/', (req, res) => {
     }
 })
 
-server.put('/users/:id', (req, res) => {
+server.put('/users/:id', uppercaser, (req, res) => {
     const id = req.params.id;
-    const newData = req.body;
+    const newData = req.uppercased;
 
     userDb
         .get(id)
