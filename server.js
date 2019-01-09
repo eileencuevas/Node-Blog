@@ -6,11 +6,20 @@ const userDb = require('./data/helpers/userDb.js');
 
 const server = express();
 
-
 // middleware
 
 server.use(helmet());
 server.use(express.json());
+
+// const uppercaser = (req, res, next) => {
+//     const name = req.body.name;
+//     if (name) {
+//         req.uppercased = { name: name.toUpperCase() };
+//         next();
+//     }
+// }
+
+// server.use(uppercaser);
 
 
 // routes
@@ -41,6 +50,23 @@ server.get('/users/:id', (req, res) => {
         .catch(() => {
             res.status(500).json({"error": 'No information could not be retrieved.'});
         });
+})
+
+server.post('/users/', (req, res) => {
+    const newUserData = req.body;
+
+    if (newUserData) {
+        userDb
+            .insert(newUserData)
+            .then(newUserId => {
+                res.status(201).json({ ...newUserData, ...newUserId });
+            })
+            .catch(() => {
+                res.status(500).json({ "error": 'There was an error with adding this user. Please try again.' });
+            });
+    } else {
+        res.status(400).json({ "error": 'Please provide a name for this user. '});
+    }
 })
 
 // exports
