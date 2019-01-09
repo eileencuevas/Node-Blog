@@ -69,6 +69,31 @@ server.post('/users/', (req, res) => {
     }
 })
 
+server.put('/users/:id', (req, res) => {
+    const id = req.params.id;
+    const newData = req.body;
+
+    userDb
+        .get(id)
+        .then(user => {
+            if (user) {
+                userDb
+                    .update(id, newData)
+                    .then(() => {
+                        res.status(200).json({ id, ...newData });
+                    })
+                    .catch(() => {
+                        res.status(500).json({ "error": ' There was an error with updating this user. Please try again.' })
+                    });
+            } else {
+                res.status(404).json({ "error": 'No user with the specified ID could be found.' })
+            }
+        })
+        .catch(() => {
+            res.status(500).json({"error": 'No information could not be retrieved.'});
+        });
+})
+
 // exports
 
 module.exports = server;
