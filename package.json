@@ -2,9 +2,10 @@
   "name": "Node-Blog",
   "version": "1.0.0",
   "description": "## Topics",
-  "main": "knexfile.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,8 @@
   },
   "homepage": "https://github.com/eileencuevas/Node-Blog#readme",
   "dependencies": {
+    "express": "^4.16.4",
+    "helmet": "^3.15.0",
     "knex": "^0.16.3",
     "sqlite3": "^4.0.4"
   },
