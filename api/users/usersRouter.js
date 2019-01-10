@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
             res.status(200).json(users);
         })
         .catch(() => {
-            res.status(500).json({"error": 'No information could not be retrieved.'});
+            res.status(500).json({"error": 'No information could be retrieved.'});
         });
 })
 
