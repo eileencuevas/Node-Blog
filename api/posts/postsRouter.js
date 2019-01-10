@@ -31,6 +31,23 @@ router.get('/:id', (req, res) => {
         });
 })
 
+router.post('/', (req, res) => {
+    const newPostData = req.body;
+
+    if (newPostData.text && newPostData.userId) {
+        postDb
+            .insert(newPostData)
+            .then(newPostID => {
+                res.status(200).json({ ...newPostID, ...newPostData });
+            })
+            .catch(() => {
+                res.status(500).json({ "error": 'This post could not be added. Please try again.' });
+            });
+    } else {
+        res.status(400).json({ "error": 'Please provide both text and userId for this post.' })
+    }
+})
+
 router.put('/:id', (req, res) => {
     const id = req.params.id;
     const newPostData = req.body;
