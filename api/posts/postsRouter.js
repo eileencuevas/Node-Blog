@@ -73,4 +73,25 @@ router.put('/:id', (req, res) => {
         });
 })
 
+router.delete('/:id', (req, res) => {
+    const id = req.params.id;
+    
+    postDb
+        .get(id)
+        .then(post => {
+            postDb
+                .remove(id)
+                .then(() => {
+                    res.status(200).json(post);
+                })
+                .catch(() => {
+                    console.log('inside delete')
+                    res.status(500).json({ "error": 'This post could not be deleted. Please try again.' });
+                }); 
+        })
+        .catch(() => {
+            res.status(404).json({ "error": 'No post with the specified ID found.' });
+        });
+})
+
 module.exports = router;
