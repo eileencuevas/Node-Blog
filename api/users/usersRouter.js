@@ -1,40 +1,10 @@
-// imports
-
 const express = require('express');
-const helmet = require('helmet');
-const userDb = require('./data/helpers/userDb.js');
+const userDb = require('../../data/helpers/userDb');
+const uppercaser = require('../config/middlewares/uppercaser');
 
-const server = express();
+const router = express.Router();
 
-// middleware
-
-server.use(helmet());
-server.use(express.json());
-
-const uppercaser = (req, res, next) => {
-    let name = req.body.name || '';
-    
-    if (name.length > 0) {
-        req.uppercased = { name: name.toUpperCase() };
-    }
-    
-    next();
-}
-
-// const uppercaser = (req, res, next) => {
-//     const name = req.body.name;
-//     if (name) {
-//         req.uppercased = { name: name.toUpperCase() };
-//         next();
-//     }
-// }
-
-server.use(uppercaser);
-
-
-// routes
-
-server.get('/users/', (req, res) => {
+router.get('/', (req, res) => {
     userDb
         .get()
         .then(users => {
@@ -45,7 +15,7 @@ server.get('/users/', (req, res) => {
         });
 })
 
-server.get('/users/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     const id = req.params.id;
 
     userDb
@@ -62,7 +32,7 @@ server.get('/users/:id', (req, res) => {
         });
 })
 
-server.get('/users/:id/posts/', (req, res) => {
+router.get('/:id/posts/', (req, res) => {
     const id = req.params.id;
 
     userDb
@@ -86,7 +56,7 @@ server.get('/users/:id/posts/', (req, res) => {
         });
 })
 
-server.post('/users/', uppercaser, (req, res) => {
+router.post('/', uppercaser, (req, res) => {
     const newUserData = req.uppercased;
 
     if (newUserData) {
@@ -103,7 +73,7 @@ server.post('/users/', uppercaser, (req, res) => {
     }
 })
 
-server.put('/users/:id', uppercaser, (req, res) => {
+router.put('/:id', uppercaser, (req, res) => {
     const id = req.params.id;
     const newData = req.uppercased;
 
@@ -128,7 +98,7 @@ server.put('/users/:id', uppercaser, (req, res) => {
         });
 })
 
-server.delete('/users/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
     const id = req.params.id;
 
     userDb
@@ -152,6 +122,4 @@ server.delete('/users/:id', (req, res) => {
         });
 })
 
-// exports
-
-module.exports = server;
+module.exports = router;
