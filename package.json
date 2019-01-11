@@ -1,0 +1,32 @@
+{
+  "name": "Node-Blog",
+  "version": "1.0.0",
+  "description": "## Topics",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-nodemon": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eileencuevas/Node-Blog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eileencuevas/Node-Blog/issues"
+  },
+  "homepage": "https://github.com/eileencuevas/Node-Blog#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "helmet": "^3.15.0",
+    "knex": "^0.16.3",
+    "sqlite3": "^4.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
